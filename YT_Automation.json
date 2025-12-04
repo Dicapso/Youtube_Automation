@@ -1,0 +1,961 @@
+{
+  "name": "Youtube_Automation",
+  "nodes": [
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-nano",
+          "cachedResultName": "GPT-4.1-NANO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Du bist ein professioneller Texter für SEO-optimierte YouTube-Titel.",
+              "role": "system"
+            },
+            {
+              "content": "=Schreib mir einen passenden SEO Youtube Titel für das Transkript folgendes Videotranskriptes. Gib mir nur den Titel sonst nichts. Maximal 100 Character also halte dich kurz.\n\n{{ $('Mətni uyğun formata gətir').item.json.transcript }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "d3f471f0-767d-428c-b4d2-40baaccbed62",
+      "name": "YT Title",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        3168,
+        560
+      ],
+      "typeVersion": 1.7,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-nano",
+          "cachedResultName": "GPT-4.1-NANO"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "Du bist ein professioneller Texteschreiber.\nDu erhältst das Transkript eines wirtschaftsbezogenen Videos und erstellst eine ausführlichere aber auch nicht zu lange  Zusammenfassung (mit Absätzen) darüber, worum es geht.\n\nSchreibe eine ausführlichere Zusammenfassung (mit Absätzen) über den Inhalt des Podcasts. \n\nDein Output wird für die Youtube Video Beschreibung verwendet. Also starte mit sowas wie: \"In diesem Video...\" oder \"In dieser Folge...\". \nSchreibe aus meiner Perspektive also Sachen wie \"meine Meinung\" oder \"meiner Ansicht nach\"...  aus der Ich- Perspektive aber niemals sowas wie \"In dieser Folge lerne ich...\" oder so ähnlich, denn ich erkläre stets den Inhalt bzw. diskutiere darüber. DU SCHREIBST NIEMALS SOWAS WIE \"DER SPRECHER SAGT\"!!! Immer aus meiner Position heraus.\n\nWichtig: Verwende klare und dominante Aussagen, wie sie im Transkript formuliert sind. Vermeide neutrale oder unsichere Formulierungen wie \"es könnte\", \"ich vermute, dass\", \"möglicherweise\" oder ähnliche Phrasen. Die Aussagen sollen selbstbewusst und eindeutig sein, um die Inhalte des Podcasts kraftvoll zu vermitteln.\nFüge einige wenige (2-4) Emojis an wo es sich anbietet. \n   \nEnde den Post mit 2-5 passenden Hashtags. Die Hashtags sollten grob sein also sowas wie #wirtschaft #geld #gold oder so ähnlich - je nachdem was passt.\n",
+              "role": "system"
+            },
+            {
+              "content": "=Hier ist das Transkript: \n\n{{ $json.transcript }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "4a936ace-78f8-435a-befd-4ed36927414c",
+      "name": "Create Description",
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "position": [
+        2864,
+        512
+      ],
+      "typeVersion": 1.7
+    },
+    {
+      "parameters": {},
+      "id": "9c40a24e-b9e4-43a5-9388-6c84e3f35357",
+      "name": "When clicking ‘Test workflow’",
+      "type": "n8n-nodes-base.manualTrigger",
+      "position": [
+        -1328,
+        736
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### 🎥Video başlığı yükləmədən saxlanılır, əlavə olaraq YT Title modulunu işə sala bilərsiniz.\n# 👇🏻\n",
+        "height": 176,
+        "width": 220,
+        "color": 3
+      },
+      "id": "fdbefb6a-eabd-4e23-9972-5a545122d434",
+      "name": "Sticky Note1",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        3600,
+        384
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Promptları dəyiş / redaktə et 👉🏻\n\n# 👇🏻",
+        "height": 200,
+        "color": 3
+      },
+      "id": "ef651cd6-dbf9-4193-802f-36340a7051c5",
+      "name": "Sticky Note2",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2864,
+        304
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# YouTube Video Təsviri / Tag-lar və s. Avtomatlaşdırılması\n\n👉🏻 **Repos**: https://github.com/dicapso\n\nYeni workflowları github repostlarımdan izləyə bilərsiniz! 🚀\n\n\n**Qeyd:**  \n- Standart olaraq, bu workflow yalnız son videonu götürür və dəyərləri tənzimləyir.  \n- Əgər bir gün ərzində və ya eyni saatda birdən çox video yükləsəniz, bu dəyəri artırmalısınız. Amma unutmayın ki, yüksək dəyər təyin etsəniz, artıq yayımlanmış köhnə videolar da işlənəcək.  \n- *Publish After* seçimindən istifadə tövsiyə olunmur, çünki planlanmış videolarda səhvlərə səbəb ola bilər.  \n- *Remove Duplicates* node-unı mövcud node-lardan ayıraraq, *Get All Videos* node-un limitini *Return all* olaraq təyin edə bilərsiniz. Bu halda, artıq yüklənmiş bütün videolar gələcəkdə geri qaytarılmayacaq.  \n- Bunu geri qaytarmaq üçün *Remove Duplicates* node-da *Clear Database* seçimini edə bilərsiniz.\n",
+        "height": 484,
+        "width": 652,
+        "color": 5
+      },
+      "id": "8a896bad-62bd-40a6-860d-7c61b9e87a1b",
+      "name": "Sticky Note3",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        368,
+        -208
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash-preview-04-17",
+        "options": {}
+      },
+      "id": "d2a556ee-4554-4965-8024-6d16d84103cf",
+      "name": "2.5FlashPrev",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "position": [
+        3168,
+        432
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Nun folgt das eigentliche Thema/Transkript. Gib mir die Youtube Tags dafür:\n\n{{ $('Mətni uyğun formata gətir').item.json.transcript }}",
+        "options": {
+          "systemMessage": "You will get the transcript of a Youtube video for which you should generate matching tags (YOU NEED TO separate it by comma).\n\nBased on the topic/transcript of the video generate YouTube tags. These tags should be very general about the topics. Give multiple matching YouTube Tags that improve SEO for the video. \n\nExample:\nif the video is about why gold is a good investment you will for example not use gold investments as a tag but rather just gold     \n\nThe tags (if appropriate) should be in German as the channel content is in German.\n\nReturn just the tags one word by one separated via Comma. \n\n\nDieses Video handelt vom zukünftigen Goldpreis und davon, wie er die Renditen von performanten Vermögenswerten wie Aktien und Anleihen in ihrer angepassten Rendite beeinflusst.\n\nErwartetet output:\nGoldpreis, zukünftiger Goldpreis, Goldinvestitionen, Vermögensrenditen, Aktien und Anleihen, Investitionsrenditen, angepasste Rendite, Goldmarkt, Finanzmärkte, Goldpreisprognose, Wirtschaftstrends, Investieren in Gold, Aktienmarktanalyse, Anleihenmarkt, Anlagestrategien, Inflation und Gold, Gold vs. Aktien, Finanzanalyse, Edelmetalle, Portfoliomanagement, Marktausblick, Investmenttipps\n "
+        }
+      },
+      "id": "70ddd541-93f4-43da-879c-7a4a205b3f3d",
+      "name": "YT Tags",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "position": [
+        3168,
+        320
+      ],
+      "typeVersion": 1.9
+    },
+    {
+      "parameters": {
+        "content": "# 📅✅ Planlaşdırma məntiqi⏰\n\n",
+        "height": 660,
+        "width": 2000,
+        "color": 4
+      },
+      "id": "7a69118e-991f-4c7d-ab5e-10aa3b55cba7",
+      "name": "Sticky Note4",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -1408,
+        304
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "amount": 3
+      },
+      "id": "4a404f85-74ab-4716-9c54-84c4281a5d9e",
+      "name": "3s",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        3872,
+        576
+      ],
+      "webhookId": "1e75fe1f-e553-4530-a8bc-5e64208a1184",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "content": "## Kod yalnız siyahıda olmayan videoları qaytarır",
+        "width": 292,
+        "color": 5
+      },
+      "id": "03c2b56f-31cd-46a5-a7e6-e6d9f7989fb9",
+      "name": "Sticky Note",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        304
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "## Videonun düzgün işləməsi üçün “PublishAt” parametri ilə birlikdə videonu private etmək lazımdır.",
+        "height": 260,
+        "width": 220,
+        "color": 3
+      },
+      "id": "ff31a9f8-315b-4aee-a237-30fcdbe20a7e",
+      "name": "Sticky Note5",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        352,
+        352
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "### Transkripti götürmək üçün videonun ya “Unlisted” (Siyahıda deyil), ya da “Published” (Yayımlanmış) vəziyyətində olması lazımdır.\n\n### Burada APIFY API tokeninizi dəyişdirin / daxil edin\n# 👇🏻",
+        "height": 240,
+        "width": 280,
+        "color": 3
+      },
+      "id": "f1e21830-b910-409a-9c60-a0834d3fb74c",
+      "name": "Sticky Note6",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2272,
+        304
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "content": "# Video təsviri, tag-lar və digər məlumatları avtomatik yarat. 🖌️📝 #️⃣",
+        "height": 660,
+        "width": 3200,
+        "color": 4
+      },
+      "id": "1763160a-d1d4-4909-bdfd-b7c8ad365587",
+      "name": "Sticky Note7",
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        864,
+        304
+      ],
+      "typeVersion": 1
+    },
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "triggerAtHour": 20,
+              "triggerAtMinute": 22
+            }
+          ]
+        }
+      },
+      "id": "4f8a9a85-11a5-490f-8151-7c8b8d58d8bf",
+      "name": "Every Day",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "position": [
+        -1328,
+        496
+      ],
+      "typeVersion": 1.2,
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "amount": 4
+      },
+      "id": "f0e2a00a-b429-466b-a334-a2d1ddb7002f",
+      "name": "4s",
+      "type": "n8n-nodes-base.wait",
+      "position": [
+        688,
+        672
+      ],
+      "webhookId": "7d5c70f8-a592-4634-8c5a-0fbd0cebf6a4",
+      "typeVersion": 1.1
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "update",
+        "videoId": "={{ $('Ən son video ID-ni götür').first().json.id }}",
+        "title": "={{ $('Son videoları çəkmək').first().json.snippet.title }}",
+        "regionCode": "DE",
+        "categoryId": "25",
+        "updateFields": {
+          "description": "={{ $('Create Description').first().json.message.content }}\n\nDiese textbasierte Zusammenfassung des Videos wurde automatisch mit dem KI-Modell gpt-4.1-nano erstellt.]\n",
+          "tags": "={{ $('YT Tags').first().json.message.content }}"
+        }
+      },
+      "id": "c2a3ca13-822b-4b08-a2f3-14801163b5ab",
+      "name": "Update Video's Metadata",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        3600,
+        576
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract video IDs from YouTube search results\n// This function processes all input items and creates separate items for each videoId\n\n// Initialize empty array for our result items\nconst resultItems = [];\n\n// Process each input item\nfor (const item of items) {\n  // Check if the item has a valid structure\n  if (item.json && item.json.id && item.json.id.videoId) {\n    // Create a new item for each videoId\n    resultItems.push({\n      json: {\n        videoId: item.json.id.videoId\n      }\n    });\n  }\n}\n\n// Return each videoId as a separate item that can be processed individually\nreturn resultItems;"
+      },
+      "id": "f93ee96d-6367-4404-8339-7d412bf65280",
+      "name": "👉 “Video ID-lərini ayrı əldə et” ✅",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -720,
+        480
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "limit": 2,
+        "filters": {},
+        "options": {
+          "order": "date"
+        }
+      },
+      "id": "9f461852-5001-4be9-a04f-14a13e1ced02",
+      "name": "✅ Təkrar planlama üçün videoları götür",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        -944,
+        480
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "dd0beeb8-df0e-4b4b-81db-d424c5cf31ca",
+      "name": "Video ID-lər üzərindən dövr et",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        -496,
+        480
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $json.videoId }}",
+        "options": {}
+      },
+      "id": "ef481fe5-eef0-49e3-a2a5-3665ff503743",
+      "name": "Video datasını götür",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        -288,
+        496
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Utility function to get next Friday at 17:00 UTC in YouTube ISO 8601 format (YYYY-MM-DDTHH:mm:ssZ)\nfunction getNextFridayUTC(startDate, weekOffset = 0) {\n  const date = new Date(startDate); // Work with a copy\n  \n  const currentUTCDay = date.getUTCDay(); // 0 for Sunday, ..., 5 for Friday\n  const daysUntilFriday = (5 - currentUTCDay + 7) % 7; // Calculate days to next Friday\n  \n  date.setUTCDate(date.getUTCDate() + daysUntilFriday + (weekOffset * 7));\n  date.setUTCHours(17, 0, 0, 0); // Set time to 17:00:00.000 UTC\n  \n  // toISOString() returns \"YYYY-MM-DDTHH:mm:ss.sssZ\"\n  // We split at '.' to remove milliseconds and add 'Z' back for \"YYYY-MM-DDTHH:mm:ssZ\"\n  return date.toISOString().split('.')[0] + \"Z\";\n}\n\n// INPUT `items` is an array from n8n.\n// Each item.json is expected to be a YouTube video object from a previous node.\nconst videosToSchedule = items.filter(item => \n  item.json && \n  item.json.status && \n  (item.json.status.privacyStatus === \"unlisted\" || item.json.status.privacyStatus === \"private\")\n  // Adjust this filter if you only want to process \"unlisted\" or only \"private\" videos\n);\n\nif (videosToSchedule.length === 0) {\n  // console.log(\"No videos found matching the filter criteria.\");\n  return []; // Return empty array if no videos to schedule\n}\n\n// Sort videos by their original published/uploaded date (snippet.publishedAt), earliest first.\nvideosToSchedule.sort((a, b) => {\n  const dateA = new Date(a.json?.snippet?.publishedAt || '1970-01-01T00:00:00Z');\n  const dateB = new Date(b.json?.snippet?.publishedAt || '1970-01-01T00:00:00Z');\n  return dateA - dateB;\n});\n\nconst now = new Date(); // Current date to calculate future Fridays\n\n// Map the filtered and sorted videos to the desired output structure for the YouTube update node.\nconst scheduledItems = videosToSchedule.map((item, index) => {\n  const videoData = item.json; // The actual video data object\n  const scheduleDate = getNextFridayUTC(now, index); // Calculate the publishAt date\n  \n  return {\n    json: { // This is the structure the next n8n YouTube node will receive\n      videoId: videoData.id,                             // ID of the video to update\n      publishAt: scheduleDate,                           // The calculated schedule time: YYYY-MM-DDTHH:mm:ssZ\n      title: videoData.snippet?.title || \"Untitled Video\", // Keep original title or use a default\n      \n      // --- CRITICAL PARAMETERS FOR THE YOUTUBE API ---\n      privacy: \"private\", // **MUST BE 'private' FOR 'publishAt' TO WORK!**\n                          // The API requires the video to be set to private when scheduling.\n      \n      // **VERY LIKELY REQUIRED: selfDeclaredMadeForKids**\n      // You MUST tell YouTube if the video is made for kids or not.\n      // Get it from existing data if available, otherwise set a default.\n      selfDeclaredMadeForKids: videoData.status?.selfDeclaredMadeForKids === true ? true : false,\n\n      // **POSSIBLY REQUIRED: categoryId (if updating snippet like title)**\n      // categoryId: videoData.snippet?.categoryId || \"YOUR_DEFAULT_CATEGORY_ID\", \n      // e.g., \"10\" for Music, \"22\" for People & Blogs.\n      // Check YouTube API docs for category IDs.\n      \n      //  You can include other fields like description if you want to update them\n      // description: videoData.snippet?.description || \"\" \n    }\n  };\n});\n\nreturn scheduledItems; // Return the array of video objects to be processed"
+      },
+      "id": "8fab489d-c03f-4b95-93d9-6690aed9a893",
+      "name": "Təkrar ID videoları qaytar",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        -288,
+        320
+      ],
+      "typeVersion": 2,
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "6dfa071a-2aaa-4388-b84c-c01e2df02deb",
+      "name": "Yayım edilməmiş bütün videolar üzərindən dövr et",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        -80,
+        496
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $json.videoId }}",
+        "options": {}
+      },
+      "id": "dd256fe0-8295-4dbf-976d-d21046f0dd57",
+      "name": "Title al",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        160,
+        640
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "update",
+        "videoId": "={{ $json.id }}",
+        "title": "={{ $json.snippet.title }}",
+        "regionCode": "DE",
+        "categoryId": "25",
+        "updateFields": {
+          "privacyStatus": "private",
+          "publishAt": "={{ $('Yayım edilməmiş bütün videolar üzərindən dövr et').item.json.publishAt }}"
+        }
+      },
+      "id": "a1262393-66d1-4b7f-945a-6a9e8dc7bfc6",
+      "name": "Yayım üçün tarix seç",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        352,
+        720
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "limit": 1,
+        "filters": {},
+        "options": {
+          "order": "date"
+        }
+      },
+      "id": "3b717ed1-9015-4936-b3f5-0fec47ac2172",
+      "name": "Son videoları çəkmək",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        880,
+        480
+      ],
+      "typeVersion": 1,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "9669a673-5eaf-4907-a69a-c5acc6a92f73",
+      "name": "Elementlər üzərində dövr et",
+      "type": "n8n-nodes-base.splitInBatches",
+      "position": [
+        1104,
+        480
+      ],
+      "typeVersion": 3
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "c2e2eecd-ca73-40c9-a364-4713030ab451",
+              "name": "id.videoId",
+              "type": "string",
+              "value": "={{ $json.id.videoId }}"
+            }
+          ]
+        },
+        "includeOtherFields": true,
+        "options": {}
+      },
+      "id": "f67dd4e1-2103-4966-b3cb-e065472ee3a6",
+      "name": "Video ID-ni al",
+      "type": "n8n-nodes-base.set",
+      "position": [
+        1328,
+        512
+      ],
+      "typeVersion": 3.4
+    },
+    {
+      "parameters": {
+        "operation": "removeItemsSeenInPreviousExecutions",
+        "dedupeValue": "={{ $json.id.videoId }}",
+        "options": {}
+      },
+      "id": "13656f4a-eb4d-41fd-a13f-86722b4e07ef",
+      "name": "Əvvəlki run-lardan duplikatları çıxar",
+      "type": "n8n-nodes-base.removeDuplicates",
+      "position": [
+        1552,
+        512
+      ],
+      "typeVersion": 2,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "version": 2,
+            "leftValue": "",
+            "caseSensitive": true,
+            "typeValidation": "strict"
+          },
+          "combinator": "and",
+          "conditions": [
+            {
+              "id": "adfea7c7-ed64-4e1e-a9c3-dc5e33aa1147",
+              "operator": {
+                "type": "array",
+                "operation": "notExists",
+                "singleValue": true
+              },
+              "leftValue": "={{$('Əvvəlki run-lardan duplikatları çıxar').all() }}",
+              "rightValue": ""
+            }
+          ]
+        },
+        "options": {}
+      },
+      "id": "b9da88d0-9ed5-4228-92bd-4e6a21c2f005",
+      "name": "Yeni videodur?",
+      "type": "n8n-nodes-base.if",
+      "position": [
+        1760,
+        512
+      ],
+      "typeVersion": 2.2
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "get",
+        "videoId": "={{ $('Video ID-ni al').item.json.id.videoId }}",
+        "options": {}
+      },
+      "id": "16ad1149-9f0a-4591-b039-ffae0aa157f1",
+      "name": "Ən son video ID-ni götür",
+      "type": "n8n-nodes-base.youTube",
+      "position": [
+        1952,
+        592
+      ],
+      "typeVersion": 1,
+      "alwaysOutputData": true,
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "MlBb7lNriuscNhRa",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.apify.com/v2/acts/pintostudio~youtube-transcript-scraper/run-sync-get-dataset-items",
+        "sendQuery": true,
+        "queryParameters": {
+          "parameters": [
+            {
+              "name": "token",
+              "value": "YOURAPITOKEN"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"videoUrl\": \"https://www.youtube.com/watch?v={{ $json.id }}\"\n}",
+        "options": {}
+      },
+      "id": "5d565d27-313d-4303-82ca-500f06c14366",
+      "name": "Transkripti əldə et",
+      "type": "n8n-nodes-base.httpRequest",
+      "position": [
+        2272,
+        560
+      ],
+      "typeVersion": 4.2,
+      "alwaysOutputData": false
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\n\nconst transcriptStrings = items.flatMap(item => {\n  const dataArray = item.json.data;\n\n  if (!dataArray || !Array.isArray(dataArray)) {\n    return [];\n  }\n\n  const segmentTexts = dataArray.map(segment => {\n      if (segment && typeof segment.text === 'string') {\n          return segment.text;\n      } else {\n          return '';\n      }\n  });\n\n  return segmentTexts;\n});\n\nconst transcript = transcriptStrings.join(' ');\n\nreturn [\n  {\n    json: {\n      transcript: transcript,\n    },\n  },\n];"
+      },
+      "id": "5572e0ce-3eb2-4c1a-976f-a58f981442ad",
+      "name": "Mətni uyğun formata gətir",
+      "type": "n8n-nodes-base.code",
+      "position": [
+        2544,
+        560
+      ],
+      "typeVersion": 2
+    },
+    {
+      "parameters": {
+        "content": "#### Tural Zamanlı",
+        "height": 80,
+        "width": 150
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -368
+      ],
+      "typeVersion": 1,
+      "id": "b597c70e-630c-43e6-80c5-5a81a2b3e710",
+      "name": "Sticky Note8"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "3s": {
+      "main": [
+        [
+          {
+            "node": "Elementlər üzərində dövr et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "4s": {
+      "main": [
+        [
+          {
+            "node": "Son videoları çəkmək",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "YT Tags": {
+      "main": [
+        [
+          {
+            "node": "Update Video's Metadata",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Every Day": {
+      "main": [
+        [
+          {
+            "node": "✅ Təkrar planlama üçün videoları götür",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "2.5FlashPrev": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "YT Tags",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create Description": {
+      "main": [
+        [
+          {
+            "node": "YT Tags",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "YT Title",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Video's Metadata": {
+      "main": [
+        [
+          {
+            "node": "3s",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Test workflow’": {
+      "main": [
+        [
+          {
+            "node": "✅ Təkrar planlama üçün videoları götür",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "👉 “Video ID-lərini ayrı əldə et” ✅": {
+      "main": [
+        [
+          {
+            "node": "Video ID-lər üzərindən dövr et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "✅ Təkrar planlama üçün videoları götür": {
+      "main": [
+        [
+          {
+            "node": "👉 “Video ID-lərini ayrı əldə et” ✅",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video ID-lər üzərindən dövr et": {
+      "main": [
+        [
+          {
+            "node": "Təkrar ID videoları qaytar",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Video datasını götür",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video datasını götür": {
+      "main": [
+        [
+          {
+            "node": "Video ID-lər üzərindən dövr et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Təkrar ID videoları qaytar": {
+      "main": [
+        [
+          {
+            "node": "Yayım edilməmiş bütün videolar üzərindən dövr et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yayım edilməmiş bütün videolar üzərindən dövr et": {
+      "main": [
+        [
+          {
+            "node": "4s",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Title al",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Title al": {
+      "main": [
+        [
+          {
+            "node": "Yayım üçün tarix seç",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yayım üçün tarix seç": {
+      "main": [
+        [
+          {
+            "node": "Yayım edilməmiş bütün videolar üzərindən dövr et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Son videoları çəkmək": {
+      "main": [
+        [
+          {
+            "node": "Elementlər üzərində dövr et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Elementlər üzərində dövr et": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Video ID-ni al",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Video ID-ni al": {
+      "main": [
+        [
+          {
+            "node": "Əvvəlki run-lardan duplikatları çıxar",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Əvvəlki run-lardan duplikatları çıxar": {
+      "main": [
+        [
+          {
+            "node": "Yeni videodur?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Yeni videodur?": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Ən son video ID-ni götür",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ən son video ID-ni götür": {
+      "main": [
+        [
+          {
+            "node": "Transkripti əldə et",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Transkripti əldə et": {
+      "main": [
+        [
+          {
+            "node": "Mətni uyğun formata gətir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mətni uyğun formata gətir": {
+      "main": [
+        [
+          {
+            "node": "Create Description",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "98a1cba6-18eb-4b55-b285-7b48cb27804b",
+  "meta": {
+    "instanceId": "76928bb43482f88bef4fef2e18c75eae7f1cd0498d0dbb62f33cdbd137f24df9"
+  },
+  "id": "mUT6gCowYuVYDjP7",
+  "tags": [
+    {
+      "name": "Privat",
+      "id": "sCvtLB4OFKuitGmN",
+      "updatedAt": "2025-12-03T23:47:16.860Z",
+      "createdAt": "2025-12-03T23:47:16.860Z"
+    },
+    {
+      "name": "Templates",
+      "id": "T9TDXzWVLpWdXuNn",
+      "updatedAt": "2025-12-03T23:47:16.888Z",
+      "createdAt": "2025-12-03T23:47:16.888Z"
+    }
+  ]
+}
