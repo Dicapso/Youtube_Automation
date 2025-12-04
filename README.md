@@ -10,7 +10,6 @@ In this video, I show you how to streamline your YouTube content creation and ma
 
 📌 Tools & Technologies featured:  
 - n8n (Workflow Automation)  
-- Python & APIs  
 - AI Text/Video Generators  
 
 🔥 Don’t forget to **like, subscribe, and hit the bell** to stay updated on the latest AI & YouTube automation tips!  
