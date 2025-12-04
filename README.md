@@ -16,4 +16,4 @@ In this video, I show you how to streamline your YouTube content creation and ma
 
 💬 Share your questions or automation tips in the comments below!  
 
-#YouTubeAutomation #AIWorkflow #n8n #DataAnalytics #Python #ContentAutomation
+#YouTubeAutomation #AIWorkflow #n8n #ContentAutomation
